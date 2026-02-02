@@ -1,0 +1,46 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useAppStore } from "@/store";
+import { apiClient } from "../lib/api-client";
+import { GET_USER_INFO } from "../lib/utils/constants";
+
+export default function AuthProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    const { userInfo, setUserInfo } = useAppStore();
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const getUserData = async ()=>{
+            try {
+                const response = await apiClient.get(GET_USER_INFO, {
+                    withCredentials: true,
+                });
+                if(response.status===200 && response.data._id){
+                    setUserInfo(response.data);
+                }
+                else{
+                    setUserInfo(undefined);
+                }
+            } catch (error) {
+                console.log(error);   
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+        if(!userInfo){
+            setLoading(true);
+            getUserData();
+        }
+        else{
+            setLoading(false);
+        }
+    }, [userInfo, setUserInfo]);
+    if(loading){
+        return <div>Loading...</div>
+    }
+    return <>{children}</>;
+}

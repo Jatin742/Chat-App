@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { getUserInfo, login, signup, updateProfile } from "../controllers/AuthController";
+import { verifyToken } from "../middlewares/AuthMiddleWare";
+
+const authRoutes = Router();
+
+authRoutes.post('/signup', signup);
+authRoutes.post('/login', login);
+authRoutes.get('/user-info', verifyToken, getUserInfo);
+authRoutes.patch('/update-profile', verifyToken, updateProfile);
+
+export default authRoutes;
