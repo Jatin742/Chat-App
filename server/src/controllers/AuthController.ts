@@ -68,10 +68,10 @@ export const updateProfile = async (request: AuthRequest, response:Response) => 
     try {
         const _id = request.userId;
         const {firstName, lastName, color }= request.body;
-        if(!firstName || !lastName || !color){
+        if(!firstName || !lastName || color != undefined){
             return response.status(400).send('First Name Last Name and color is required');
         }
-        const user = await User.findByIdAndUpdate(_id, {firstName, lastName, color}, {new: true, runValidators: true});
+        const user = await User.findByIdAndUpdate(_id, {firstName, lastName, color, profileSetup: true}, {new: true, runValidators: true});
         
         return response.status(200).json(user);
     } catch (error) {

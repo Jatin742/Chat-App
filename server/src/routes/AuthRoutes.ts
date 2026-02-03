@@ -7,6 +7,6 @@ const authRoutes = Router();
 authRoutes.post('/signup', signup);
 authRoutes.post('/login', login);
 authRoutes.get('/user-info', verifyToken, getUserInfo);
-authRoutes.patch('/update-profile', verifyToken, updateProfile);
+authRoutes.post('/update-profile', verifyToken, updateProfile);
 
 export default authRoutes;

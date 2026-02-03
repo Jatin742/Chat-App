@@ -3,6 +3,10 @@ import { StateCreator } from "zustand";
 export interface User {
   id: string;
   email: string;
+  firstName: string;
+  lastName: string;
+  color: number;
+  profileSetup: boolean;
 }
 export interface AuthSlice {
   userInfo?: User;

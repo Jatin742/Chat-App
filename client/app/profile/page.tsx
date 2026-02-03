@@ -3,7 +3,7 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { useAppStore } from '@/store'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { IoArrowBack } from 'react-icons/io5';
 import { colors, getColor } from '../lib/utils/colors';
@@ -21,7 +21,17 @@ const page = () => {
     const [lastName, setLastName] = useState('');
     const [image, setImage] = useState('');
     const [hovered, setHovered] = useState(false);
-    const [selectedColor, setselectedColor] = useState(0);
+    const [selectedColor, setSelectedColor] = useState(0);
+
+    useEffect(() => {
+      if(userInfo?.profileSetup){
+        setFirstName(userInfo.firstName);
+        setLastName(userInfo.lastName);
+        setSelectedColor(userInfo.color);
+      }
+    
+    }, [userInfo])
+    
 
     const validateProfile = () => {
       if(!firstName){
@@ -58,7 +68,7 @@ const page = () => {
           <IoArrowBack className='text-4xl lg:text-6xl text-white/90 cursor-pointer '/>
         </div>
         <div className="grid grid-cols-2 ">
-          <div className="h-full w-32 md:h-48 relative flex items-center justify-center"
+          <div className="h-full w-32 md:h-48 md:w-48 relative flex items-center justify-center"
             onMouseEnter={() => {setHovered(true)}}
             onMouseLeave={() => setHovered(false)}
           >
@@ -119,7 +129,7 @@ const page = () => {
                         :""
                     }
                     `}
-                    onClick={() => setselectedColor(index)}
+                    onClick={() => setSelectedColor(index)}
                 >
 
                 </div>
