@@ -7,6 +7,7 @@ export interface User {
   lastName: string;
   color: number;
   profileSetup: boolean;
+  image: string;
 }
 export interface AuthSlice {
   userInfo?: User;

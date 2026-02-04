@@ -2,29 +2,36 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get('jwt')?.value;
+  const profileSetup = request.cookies.get('profileSetup')?.value === 'true';
+
   const { pathname } = request.nextUrl;
 
-  // Allow static files
-  // if (
-  //   pathname.startsWith('/_next') ||
-  //   pathname.startsWith('/favicon.ico')
-  // ) {
-  //   return NextResponse.next();
-  // }
-
-  // If NOT logged in and not already on /auth
-  if (!token && pathname !== '/auth') {
-    return NextResponse.redirect(new URL('/auth', request.url));
+  // If not logged in
+  if (!token) {
+    if (!pathname.startsWith('/auth')) {
+      return NextResponse.redirect(new URL('/auth', request.url));
+    }
+    return NextResponse.next();
   }
 
-  // If logged in and trying to access auth page
-  if (token && pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/profile', request.url));
+  // If logged in but profile not setup
+  if (token && !profileSetup) {
+    if (!pathname.startsWith('/profile')) {
+      return NextResponse.redirect(new URL('/profile', request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // If logged in and profile setup is done
+  if (token && profileSetup) {
+    // if (pathname === '/' || pathname.startsWith('/profile') || pathname.startsWith('/auth')) {
+    //   return NextResponse.redirect(new URL('/chat', request.url));
+    // }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!_next|favicon.ico).*)'],
+  matcher: ['/', '/((?!_next|favicon.ico|api).*)'],
 };
