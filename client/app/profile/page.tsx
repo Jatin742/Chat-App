@@ -10,7 +10,7 @@ import { colors, getColor } from '../lib/utils/colors';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { apiClient } from '../lib/api-client';
-import { ADD_PROFILE_IMAGE_ROUTE, HOST, UPDATE_PROFILE_ROUTE } from '../lib/utils/constants';
+import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from '../lib/utils/constants';
 import { useRouter } from 'next/navigation';
 
 const page = () => {
@@ -29,9 +29,12 @@ const page = () => {
         setFirstName(userInfo.firstName);
         setLastName(userInfo.lastName);
         setSelectedColor(userInfo.color);
-        // setImage(userInfo.image);
+        
         if(userInfo.image){
           setImage(`${HOST}/${userInfo.image}`);
+        }
+        else{
+          setImage("");
         }
       }
     
@@ -90,7 +93,20 @@ const page = () => {
       
     }
     const handleDeleteImage = async () => {
-      
+      try {
+        const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, {
+          withCredentials:true,
+        });
+        if(response.status === 200){
+          toast.success('Profile Image Deleted Successfully');
+          if(!userInfo){
+            return;
+          }
+          setUserInfo({...userInfo, image: ""});
+        }
+      } catch (error) {
+        
+      }
     }
   return (
     <div className='bg-[#1b1c24] h-screen flex items-center justify-center flex-col gap-10'>

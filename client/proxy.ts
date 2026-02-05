@@ -24,9 +24,9 @@ export function proxy(request: NextRequest) {
 
   // If logged in and profile setup is done
   if (token && profileSetup) {
-    // if (pathname === '/' || pathname.startsWith('/profile') || pathname.startsWith('/auth')) {
-    //   return NextResponse.redirect(new URL('/chat', request.url));
-    // }
+    if (pathname === '/' || pathname.startsWith('/profile') || pathname.startsWith('/auth')) {
+      return NextResponse.redirect(new URL('/chat', request.url));
+    }
   }
 
   return NextResponse.next();

@@ -3,6 +3,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import AuthProvider from "./providers/AuthProvider";
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap', // 'swap' ensures the text is visible while the font is loading
+  variable: '--font-poppins', // Assign a CSS variable name
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], // Specify the weights you need
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable}  antialiased`}
       >
         <AuthProvider>
         {children}

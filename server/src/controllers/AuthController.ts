@@ -112,6 +112,16 @@ export const addProfileImage = async (request: AuthRequest, response: Response)=
     return response.status(200).json(user);
 }
 
-export const removeProfileImage = async ()=>{
+export const removeProfileImage = async (request: AuthRequest, response: Response)=>{
+    const user = await User.findById(request.userId);
+    if(!user){
+        return response.status(400).send('User not Found');
+    }
+    if(user.image){
+        unlinkSync(user.image);
+    }
+    user.image = "";
+    await user.save();
 
+    return response.status(200).send("Profile Image Removed Successfully");
 }
