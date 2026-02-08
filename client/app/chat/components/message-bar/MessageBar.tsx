@@ -20,10 +20,10 @@ const MessageBar = () => {
       if(emojiRef.current && !emojiRef.current.contains(event.target as Node)){
         setEmojiPickerOpen(false);
       }
-      document.addEventListener('mousedown', handleClickOutside);
-      return ()=>{
-        document.removeEventListener('mousedown', handleClickOutside);
-      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return ()=>{
+      document.removeEventListener('mousedown', handleClickOutside);
     }
   },[emojiRef]);
   return (
@@ -44,7 +44,7 @@ const MessageBar = () => {
           >
           <RiEmojiStickerLine  className='text-2xl'/>
           </button>
-          <div className="absolute bottom-16 right-0">
+          <div className="absolute bottom-16 right-0" ref={emojiRef}>
             <EmojiPicker 
             theme={Theme.DARK}
               open={emojiPickerOpen}

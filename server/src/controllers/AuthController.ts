@@ -82,16 +82,20 @@ export const getUserInfo = async (request: AuthRequest, response: Response) => {
 export const updateProfile = async (request: AuthRequest, response: Response) => {
     try {
         const _id = request.userId;
+        
         const { firstName, lastName, color } = request.body;
-        if (!firstName || !lastName || color != undefined) {
+        
+        if (!firstName || !lastName || color == undefined) {
             return response.status(400).send('First Name Last Name and color is required');
         }
+        
         const user = await User.findByIdAndUpdate(_id, { firstName, lastName, color, profileSetup: true }, { new: true, runValidators: true });
         response.cookie("profileSetup", user?.profileSetup, {
             maxAge,
             secure: true,
             sameSite: 'none',
         });
+        
         return response.status(200).json(user);
     } catch (error) {
         return response.status(500).send("Internal Server Error");

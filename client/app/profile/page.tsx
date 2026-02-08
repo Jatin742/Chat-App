@@ -55,7 +55,7 @@ const page = () => {
     const saveChanges = async ()=>{
       if(validateProfile()){
         try {
-          const response = await apiClient.patch(UPDATE_PROFILE_ROUTE, {firstName, lastName, color:selectedColor}, 
+          const response = await apiClient.post(UPDATE_PROFILE_ROUTE, {firstName, lastName, color:selectedColor}, 
             {withCredentials:true}
           );
           if(response.status === 200){
