@@ -103,29 +103,53 @@ export const updateProfile = async (request: AuthRequest, response: Response) =>
 }
 
 export const addProfileImage = async (request: AuthRequest, response: Response)=>{
-    if(!request.file){
-        return response.status(400).send('File is Required');
+    try {
+        if(!request.file){
+            return response.status(400).send('File is Required');
+        }
+        const date = Date.now();
+        let fileName = 'uploads/profiles/'+date+request.file.originalname;
+        renameSync(request.file.path, fileName);
+        const user = await User.findByIdAndUpdate(request.userId, {image: fileName}, {
+            runValidators:true,
+            new:true,
+        });
+        return response.status(200).json(user);
+    } catch (error) {
+        return response.status(500).send("Internal Server Error");
     }
-    const date = Date.now();
-    let fileName = 'uploads/profiles/'+date+request.file.originalname;
-    renameSync(request.file.path, fileName);
-    const user = await User.findByIdAndUpdate(request.userId, {image: fileName}, {
-        runValidators:true,
-        new:true,
-    });
-    return response.status(200).json(user);
 }
 
 export const removeProfileImage = async (request: AuthRequest, response: Response)=>{
-    const user = await User.findById(request.userId);
-    if(!user){
-        return response.status(400).send('User not Found');
+    try {
+        const user = await User.findById(request.userId);
+        if(!user){
+            return response.status(400).send('User not Found');
+        }
+        if(user.image){
+            unlinkSync(user.image);
+        }
+        user.image = "";
+        await user.save();
+    
+        return response.status(200).send("Profile Image Removed Successfully");
+    } catch (error) {
+        return response.status(500).send("Internal Server Error");
     }
-    if(user.image){
-        unlinkSync(user.image);
-    }
-    user.image = "";
-    await user.save();
+}
 
-    return response.status(200).send("Profile Image Removed Successfully");
+export const logout = async (request: AuthRequest, response: Response) => {
+    try {
+        response.cookie("jwt", "", {
+        maxAge: 1,
+        secure: true,
+        sameSite: 'none',
+    });
+    response.cookie("profileSetup", "", {
+        maxAge: 1,
+    });
+    return response.status(200).send("Logged Out Successfully");
+    } catch (error) {
+        return response.status(500).send("Internal Server Error");
+    }
 }
