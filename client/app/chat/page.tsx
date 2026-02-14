@@ -8,14 +8,13 @@ import { useAppStore } from '@/store'
 import { useRouter } from 'next/navigation'
 
 const page = () => {
-  const {userInfo} = useAppStore();
+  const {userInfo, selectedChatType} = useAppStore();
   const router = useRouter();
 
   return (
     <div className='flex h-screen text-white overflow-hidden'>
       <ContactsContainer/>
-      {/* <EmptyChatContainer /> */}
-      {/* <ChatContainer /> */}
+      {selectedChatType ? <ChatContainer /> : <EmptyChatContainer />}
     </div>
   )
 }

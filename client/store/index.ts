@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { AuthSlice, createAuthSlice } from "./slices/auth-slice";
+import { ChatSlice, createChatSlice } from "./slices/chat-slice";
 
-export const useAppStore = create<AuthSlice>()((...a) => ({
+type Store = AuthSlice & ChatSlice;
+
+export const useAppStore = create<Store>()((...a) => ({
     ...createAuthSlice(...a),
+    ...createChatSlice(...a),
 }));

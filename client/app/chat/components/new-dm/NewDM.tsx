@@ -17,13 +17,16 @@ import { HOST, SEARCH_CONTACTS_ROUTE } from "@/app/lib/utils/constants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/store/slices/auth-slice";
+import { useAppStore } from "@/store";
 // import { log } from "console";
 
 
 const NewDM = () => {
+    const { setSelectedChatType, setSelectedChatData } = useAppStore();
     const [openNewContactModel, setOpenNewContactModel] = useState(false);
     const [searchedContacts, setSearchedContacts] = useState<User[]>([]);
     const searchContacts = async (searchTerm: string) => {
+
         try {
             if (searchTerm.length > 0) {
                 const response = await apiClient.get(SEARCH_CONTACTS_ROUTE,
@@ -42,8 +45,13 @@ const NewDM = () => {
             console.log(error);
         }
     }
-  
 
+    const selectNewContact = (contact: User) => {
+        setOpenNewContactModel(false);
+        setSelectedChatType("contact");
+        setSelectedChatData(contact);
+        setSearchedContacts([]);
+    }
     return (
         <>
             <TooltipProvider>
@@ -67,8 +75,8 @@ const NewDM = () => {
                 <DialogContent
                     className="bg-[#181920] border-none text-white w-100 h-100 flex flex-col"
                 >
-                    <DialogHeader>
-                        <DialogTitle>Please select a contact</DialogTitle>
+                    <DialogHeader className="flex flex-col items-center">
+                        <DialogTitle>Please Select a Contact</DialogTitle>
                         <DialogDescription></DialogDescription>
                     </DialogHeader>
                     <div>
@@ -78,13 +86,15 @@ const NewDM = () => {
                             onChange={(e) => searchContacts(e.target.value)}
                         />
                     </div>
+                    {searchedContacts.length > 0 && 
                     <ScrollArea className="h-62.5 ">
                         <div className="flex flex-col gap-5">
                             {searchedContacts.map((contact) => (
                                 // {console.log(contact.image);}
-                                
+
                                 <div key={contact._id}
                                     className="flex gap-3 items-center cursor-pointer"
+                                    onClick={() => selectNewContact(contact)}
                                 >
                                     <div className="w-12 h-12 relative overflow-hidden">
                                         <Avatar className='h-12 w-12 rounded-full overflow-hidden'>
@@ -106,17 +116,17 @@ const NewDM = () => {
                                         </Avatar>
                                     </div>
                                     <div className="flex flex-col">
-                                        <span>{contact?.firstName && contact.lastName ? 
-                                        `${contact.firstName} ${contact.lastName}` : ""
+                                        <span>{contact?.firstName && contact.lastName ?
+                                            `${contact.firstName} ${contact.lastName}` : ""
                                         }</span>
                                         <span className="text-xs">{contact.email}</span>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                    </ScrollArea>
+                    </ScrollArea>}
                     {searchedContacts.length == 0 &&
-                        <div className='flex-1 md:bg-[#1c1d25] md:flex mt-5 flex-col justify-center items-center duration-1000 transition-all'>
+                        <div className='flex-1 md:bg-[#1c1d25] md:flex mt-5 md:mt-0 flex-col justify-center items-center duration-1000 transition-all'>
                             <Lottie
                                 isClickToPauseDisabled={true}
                                 height={100}
