@@ -6,11 +6,11 @@ import { useAppStore } from '@/store'
 import { useEffect, useRef, useState } from 'react';
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { IoArrowBack } from 'react-icons/io5';
-import { colors, getColor } from '../lib/utils/colors';
+import { colors, getColor } from '../../lib/utils/colors';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { apiClient } from '../lib/api-client';
-import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from '../lib/utils/constants';
+import { apiClient } from '../../lib/api-client';
+import { ADD_PROFILE_IMAGE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE } from '../../lib/utils/constants';
 import { useRouter } from 'next/navigation';
 
 const page = () => {

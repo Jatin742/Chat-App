@@ -66,7 +66,11 @@ export const getUserInfo = async (request: AuthRequest, response: Response) => {
         const _id = request.userId;
         const user = await User.findById(_id);
         if (!user) {
-            return response.status(404).send('User with given id is not found');
+            return response.status(404).cookie("jwt", "", {
+                maxAge: 1,
+                secure: true,
+                sameSite: 'none',
+            }).send('User with given id is not found');
         }
         response.cookie("profileSetup", user.profileSetup, {
             maxAge,
@@ -82,37 +86,37 @@ export const getUserInfo = async (request: AuthRequest, response: Response) => {
 export const updateProfile = async (request: AuthRequest, response: Response) => {
     try {
         const _id = request.userId;
-        
+
         const { firstName, lastName, color } = request.body;
-        
+
         if (!firstName || !lastName || color == undefined) {
             return response.status(400).send('First Name Last Name and color is required');
         }
-        
+
         const user = await User.findByIdAndUpdate(_id, { firstName, lastName, color, profileSetup: true }, { new: true, runValidators: true });
         response.cookie("profileSetup", user?.profileSetup, {
             maxAge,
             secure: true,
             sameSite: 'none',
         });
-        
+
         return response.status(200).json(user);
     } catch (error) {
         return response.status(500).send("Internal Server Error");
     }
 }
 
-export const addProfileImage = async (request: AuthRequest, response: Response)=>{
+export const addProfileImage = async (request: AuthRequest, response: Response) => {
     try {
-        if(!request.file){
+        if (!request.file) {
             return response.status(400).send('File is Required');
         }
         const date = Date.now();
-        let fileName = 'uploads/profiles/'+date+request.file.originalname;
+        let fileName = 'uploads/profiles/' + date + request.file.originalname;
         renameSync(request.file.path, fileName);
-        const user = await User.findByIdAndUpdate(request.userId, {image: fileName}, {
-            runValidators:true,
-            new:true,
+        const user = await User.findByIdAndUpdate(request.userId, { image: fileName }, {
+            runValidators: true,
+            new: true,
         });
         return response.status(200).json(user);
     } catch (error) {
@@ -120,18 +124,18 @@ export const addProfileImage = async (request: AuthRequest, response: Response)=
     }
 }
 
-export const removeProfileImage = async (request: AuthRequest, response: Response)=>{
+export const removeProfileImage = async (request: AuthRequest, response: Response) => {
     try {
         const user = await User.findById(request.userId);
-        if(!user){
+        if (!user) {
             return response.status(400).send('User not Found');
         }
-        if(user.image){
+        if (user.image) {
             unlinkSync(user.image);
         }
         user.image = "";
         await user.save();
-    
+
         return response.status(200).send("Profile Image Removed Successfully");
     } catch (error) {
         return response.status(500).send("Internal Server Error");
@@ -141,14 +145,14 @@ export const removeProfileImage = async (request: AuthRequest, response: Respons
 export const logout = async (request: AuthRequest, response: Response) => {
     try {
         response.cookie("jwt", "", {
-        maxAge: 1,
-        secure: true,
-        sameSite: 'none',
-    });
-    response.cookie("profileSetup", "", {
-        maxAge: 1,
-    });
-    return response.status(200).send("Logged Out Successfully");
+            maxAge: 1,
+            secure: true,
+            sameSite: 'none',
+        });
+        response.cookie("profileSetup", "", {
+            maxAge: 1,
+        });
+        return response.status(200).send("Logged Out Successfully");
     } catch (error) {
         return response.status(500).send("Internal Server Error");
     }

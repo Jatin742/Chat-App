@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAppStore } from "@/store";
 import { apiClient } from "../lib/api-client";
 import { GET_USER_INFO } from "../lib/utils/constants";
+import { useRouter } from "next/navigation";
 
 export default function AuthProvider({
     children,
@@ -12,6 +13,7 @@ export default function AuthProvider({
 }) {
     const { userInfo, setUserInfo } = useAppStore();
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
     useEffect(() => {
         const getUserData = async ()=>{
             try {
@@ -23,9 +25,12 @@ export default function AuthProvider({
                 }
                 else{
                     setUserInfo(undefined);
+                    router.push('/login');
+
                 }
             } catch (error) {
-                console.log(error);   
+                console.log(error); 
+                router.push('/login');  
             }
             finally {
                 setLoading(false);
