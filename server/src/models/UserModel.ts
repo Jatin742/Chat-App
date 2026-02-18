@@ -23,15 +23,15 @@ const UserSchema =  new Schema<IUser>({
     },
     firstName:{
         type: String,
-        requuired: false,
+        required: false,
     },
     lastName:{
         type: String,
-        requuired: false,
+        required: false,
     },
     image:{
         type: String,
-        requuired: false,
+        required: false,
     },
     color: {
         type: Number,
@@ -44,6 +44,9 @@ const UserSchema =  new Schema<IUser>({
 });
 
 UserSchema.pre<IUser>("save",  async function () {
+if (!this.isModified("password")) {
+    return;
+}
   const salt = await genSalt(10);
   this.password = await hash(this.password, salt);
 });
