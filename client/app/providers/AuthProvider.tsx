@@ -20,17 +20,18 @@ export default function AuthProvider({
                 const response = await apiClient.get(GET_USER_INFO, {
                     withCredentials: true,
                 });
+                
                 if(response.status===200 && response.data._id){
                     setUserInfo(response.data);
                 }
                 else{
                     setUserInfo(undefined);
-                    router.push('/login');
+                    router.push('/auth');
 
                 }
             } catch (error) {
                 console.log(error); 
-                router.push('/login');  
+                router.push('/auth');  
             }
             finally {
                 setLoading(false);

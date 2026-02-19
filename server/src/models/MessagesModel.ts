@@ -29,7 +29,7 @@ const MessageSchema = {
             return this.messageType === "file";
         }
     },
-    timestamp: {
+    timeStamp: {
         type: Date,
         default: Date.now,
     },

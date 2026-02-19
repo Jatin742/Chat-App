@@ -7,7 +7,6 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import Lottie from "react-lottie";
@@ -16,15 +15,15 @@ import { apiClient } from "@/app/lib/api-client";
 import { HOST, SEARCH_CONTACTS_ROUTE } from "@/app/lib/utils/constants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/store/slices/auth-slice";
 import { useAppStore } from "@/store";
+import { IUser } from "@/interface/IUser";
 // import { log } from "console";
 
 
 const NewDM = () => {
     const { setSelectedChatType, setSelectedChatData } = useAppStore();
     const [openNewContactModel, setOpenNewContactModel] = useState(false);
-    const [searchedContacts, setSearchedContacts] = useState<User[]>([]);
+    const [searchedContacts, setSearchedContacts] = useState<IUser[]>([]);
     const searchContacts = async (searchTerm: string) => {
 
         try {
@@ -46,7 +45,7 @@ const NewDM = () => {
         }
     }
 
-    const selectNewContact = (contact: User) => {
+    const selectNewContact = (contact: IUser) => {
         setOpenNewContactModel(false);
         setSelectedChatType("contact");
         setSelectedChatData(contact);

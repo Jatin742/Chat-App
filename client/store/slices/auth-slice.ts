@@ -1,17 +1,8 @@
+import { IUser } from "@/interface/IUser";
 import { StateCreator } from "zustand";
-
-export interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  color: number;
-  profileSetup: boolean;
-  image: string;
-}
 export interface AuthSlice {
-  userInfo?: User;
-  setUserInfo: (userInfo: User | undefined) => void;
+  userInfo?: IUser;
+  setUserInfo: (userInfo: IUser | undefined) => void;
 }
 
 
