@@ -6,11 +6,12 @@ import { IUser } from "@/interface/IUser";
 export interface ChatSlice {
   selectedChatType?: string;
   selectedChatData?: IUser;
-  selectedChatMessages: any[];
-
+  selectedChatMessages: IMessage[];
+  directMessagesContacts: IUser[];
   setSelectedChatType: (chatType: string | undefined) => void;
   setSelectedChatData: (chat: IUser | undefined) => void;
-  setSelectedChatMessages: (messages: any[]) => void;
+  setSelectedChatMessages: (messages: IMessage[]) => void;
+  setDirectMessagesContacts: (contacts: IUser[]) => void;
   closeChat: () => void;
   addMessage: (message: IMessage) => void;
 }
@@ -24,12 +25,12 @@ export const createChatSlice: StateCreator<
   selectedChatType: undefined,
   selectedChatData: undefined,
   selectedChatMessages: [],
-
+  directMessagesContacts: [],
   setSelectedChatType: (chatType) => set({ selectedChatType: chatType }),
   setSelectedChatData: (chat) => set({ selectedChatData: chat }),
   setSelectedChatMessages: (messages) =>
     set({ selectedChatMessages: messages }),
-
+  setDirectMessagesContacts: (contacts) => set({ directMessagesContacts: contacts }),
   closeChat: () =>
     set({
       selectedChatType: undefined,
