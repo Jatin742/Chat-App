@@ -10,6 +10,7 @@ export class UserContactStrategy implements IContactDetailsStrategy {
       email: contact.email,
       image: contact.image,
       color: contact.color,
+      contactType: contact.contactType,
     };
   }
 }

@@ -4,6 +4,7 @@ import moment from 'moment';
 import { IMessage } from '@/context/SocketContext';
 import { apiClient } from '@/app/lib/api-client';
 import { GET_ALL_MESSAGES_ROUTE, HOST } from '@/app/lib/utils/constants';
+import { ContactType } from '@/enum/ContactType';
 
 const MessageContainer = () => {
   const { selectedChatData, selectedChatType, userInfo, selectedChatMessages, setSelectedChatMessages } = useAppStore();
@@ -22,7 +23,7 @@ const MessageContainer = () => {
       }
     }
     if(selectedChatData?._id){
-      if(selectedChatType === "contact"){
+      if(selectedChatType === ContactType.USER){
         getMessages();
       }
     }
@@ -53,7 +54,7 @@ const MessageContainer = () => {
             )
           }
           {
-            selectedChatType === "contact" && renderDMMessages(message)
+            selectedChatType === ContactType.USER && renderDMMessages(message)
           }
         </div>
       );

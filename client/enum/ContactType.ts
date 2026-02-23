@@ -1,4 +1,4 @@
 export enum ContactType {
-    USER,
-    CHANNEL
+  USER = "USER",
+  CHANNEL = "CHANNEL"
 }

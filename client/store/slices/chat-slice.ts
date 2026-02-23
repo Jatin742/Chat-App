@@ -1,18 +1,18 @@
 import { IMessage } from "@/context/SocketContext";
 import { StateCreator } from "zustand";
-import { IUser } from "@/interface/IUser";
 import { IBaseContact } from "@/interface/IBaseContact";
+import { ContactType } from "@/enum/ContactType";
 
 
 export interface ChatSlice {
-  selectedChatType?: string;
+  selectedChatType?: ContactType;
   selectedChatData?: IBaseContact;
   selectedChatMessages: IMessage[];
-  directMessagesContacts: IUser[];
-  setSelectedChatType: (chatType: string | undefined) => void;
+  directMessagesContacts: IBaseContact[];
+  setSelectedChatType: (chatType: ContactType | undefined) => void;
   setSelectedChatData: (chat: IBaseContact | undefined) => void;
   setSelectedChatMessages: (messages: IMessage[]) => void;
-  setDirectMessagesContacts: (contacts: IUser[]) => void;
+  setDirectMessagesContacts: (contacts: IBaseContact[]) => void;
   closeChat: () => void;
   addMessage: (message: IMessage) => void;
 }

@@ -7,6 +7,7 @@ export class ChannelContactStrategy implements IContactDetailsStrategy {
     return {
       _id: contact._id,
       name: contact.name,
+      contactType: contact.contactType,
     };
   }
 }
