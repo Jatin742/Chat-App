@@ -1,5 +1,6 @@
-export interface IUser {
-  _id: string;
+import { IBaseContact } from "./IBaseContact";
+
+export interface IUser extends IBaseContact {
   email: string;
   firstName: string;
   lastName: string;

@@ -1,15 +1,16 @@
 import { IMessage } from "@/context/SocketContext";
 import { StateCreator } from "zustand";
 import { IUser } from "@/interface/IUser";
+import { IBaseContact } from "@/interface/IBaseContact";
 
 
 export interface ChatSlice {
   selectedChatType?: string;
-  selectedChatData?: IUser;
+  selectedChatData?: IBaseContact;
   selectedChatMessages: IMessage[];
   directMessagesContacts: IUser[];
   setSelectedChatType: (chatType: string | undefined) => void;
-  setSelectedChatData: (chat: IUser | undefined) => void;
+  setSelectedChatData: (chat: IBaseContact | undefined) => void;
   setSelectedChatMessages: (messages: IMessage[]) => void;
   setDirectMessagesContacts: (contacts: IUser[]) => void;
   closeChat: () => void;
@@ -37,11 +38,11 @@ export const createChatSlice: StateCreator<
       selectedChatData: undefined,
       selectedChatMessages: [],
     }),
-    addMessage: (message) => {
-      const selectedChatMessages = get().selectedChatMessages;
-      // const selectedChatType = get().selectedChatType;
-      set({
-        selectedChatMessages: [...selectedChatMessages, message]
-      })
-    }
+  addMessage: (message) => {
+    const selectedChatMessages = get().selectedChatMessages;
+    // const selectedChatType = get().selectedChatType;
+    set({
+      selectedChatMessages: [...selectedChatMessages, message]
+    })
+  }
 });

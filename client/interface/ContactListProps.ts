@@ -1,6 +1,6 @@
-import { IUser } from "./IUser";
+import { IBaseContact } from "./IBaseContact";
 
 export interface ContactListProps {
-  contacts: IUser[];
+  contacts: IBaseContact[];
   isChannel?: boolean;
 }
