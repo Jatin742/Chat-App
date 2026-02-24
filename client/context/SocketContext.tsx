@@ -2,6 +2,7 @@
 
 import { HOST } from "@/app/lib/utils/constants";
 import { useAppStore } from "@/store";
+import { MessageType } from "@/types/MessageType";
 import { createContext, useContext, useEffect, useRef } from "react";
 import {io, Socket} from "socket.io-client";
 
@@ -12,18 +13,18 @@ export const useSocket = () => {
     return useContext(SocketContext)
 }
 
-export interface IMessage {
-  _id: string;
-  sender: {
-    _id: string;
-  };
-  recipient: {
-    _id: string;
-  };
-  content: string;
-  messageType: "text" | "file";
-  timeStamp: Date;
-}
+// export interface IMessage {
+//   _id: string;
+//   sender: {
+//     _id: string;
+//   };
+//   recipient: {
+//     _id: string;
+//   };
+//   content: string;
+//   messageType: "text" | "file";
+//   timeStamp: Date;
+// }
 
 
 export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -42,12 +43,12 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
                 console.log('Connected to Socket.IO server with ID:', socket.current?.id);
             });
 
-            const handleReceiveMessage = (message: IMessage) => {
+            const handleReceiveMessage = (message: MessageType) => {
                 const { selectedChatData, selectedChatType, addMessage } =useAppStore.getState();
-                console.log("Here 1 ",selectedChatData );
+                // console.log("Here 1 ",selectedChatData );
                 
                 if(selectedChatType !== undefined && (selectedChatData?._id === message.sender._id || selectedChatData?._id === message.recipient._id)){
-                    console.log("njfa", message);
+                    // console.log("njfa", message);
                     // console.log("newfwifwkfm");
                     
                     addMessage(message);

@@ -1,3 +1,5 @@
+import { MessageType } from "@/enum/MessageEnum";
+
 export interface IMessage {
   _id: string;
   sender: {
@@ -6,7 +8,5 @@ export interface IMessage {
   recipient: {
     _id: string;
   };
-  content: string;
-  messageType: "text" | "file";
   timeStamp: Date;
 }

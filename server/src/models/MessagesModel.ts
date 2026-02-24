@@ -14,7 +14,7 @@ const MessageSchema = {
     },
     messageType: {
         type: String,
-        enum: ["text", "file"],
+        enum: ["TEXT", "FILE"],
         required: true,
     },
     content: {
