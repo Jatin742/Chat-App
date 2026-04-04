@@ -37,10 +37,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable}  antialiased`}
       >
-        <AuthProvider>
+        {/* <AuthProvider> */}
         {children}
         <Toaster closeButton/>
-        </AuthProvider>
+        {/* </AuthProvider> */}
       </body>
     </html>
   );

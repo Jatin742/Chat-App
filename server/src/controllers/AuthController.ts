@@ -45,17 +45,22 @@ export const login = async (request: Request, response: Response) => {
         if (!auth) {
             return response.status(404).send('Password is incorrect');
         }
-        response.cookie("jwt", createToken(email, user._id.toString()), {
-            maxAge,
-            secure: true,
-            sameSite: 'none',
-        }).status(200).json({ user });
-        response.cookie("profileSetup", user.profileSetup, {
-            maxAge,
-            secure: true,
-            sameSite: 'none',
-        });
-        return response;
+        // Chain the cookies first, then send the status and data
+        return response
+            .cookie("jwt", createToken(email, user._id.toString()), {
+                maxAge,
+                secure: true,
+                sameSite: 'none',
+                httpOnly: true, // Recommended for security
+            })
+            .cookie("profileSetup", user.profileSetup, {
+                maxAge,
+                secure: true,
+                sameSite: 'none',
+            })
+            .status(200)
+            .json({ user });
+
     } catch (error) {
         return response.status(500).send("Internal Server Error");
     }
@@ -151,6 +156,8 @@ export const logout = async (request: AuthRequest, response: Response) => {
         });
         response.cookie("profileSetup", "", {
             maxAge: 1,
+            secure: true,
+            sameSite: 'none',
         });
         return response.status(200).send("Logged Out Successfully");
     } catch (error) {
