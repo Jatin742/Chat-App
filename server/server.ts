@@ -13,9 +13,10 @@ dotenv.config({ debug: false });
 const app = express();
 const port = process.env.PORT || 3001;
 const databaseURL = process.env.DATABASE_URL as string;
+const allowedOrigins = process.env.ORIGIN ? process.env.ORIGIN.split(",") : [];
 
 app.use(cors({
-    origin: [process.env.ORIGIN as string],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
 }));

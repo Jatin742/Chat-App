@@ -30,7 +30,6 @@ export default function AuthProvider({
 
                 }
             } catch (error) {
-                console.log(error); 
                 router.push('/auth');  
             }
             finally {
@@ -44,7 +43,7 @@ export default function AuthProvider({
         else{
             setLoading(false);
         }
-    }, [userInfo, setUserInfo]);
+    }, []);
     if(loading){
         return <div>Loading...</div>
     }

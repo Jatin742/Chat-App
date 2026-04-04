@@ -18,10 +18,10 @@ const ProfileInfo = () => {
       });
       if(response.status === 200){
         setUserInfo(undefined);
-        router.push('/login');
+        router.replace('/auth');
       }
     } catch (error) {
-      
+      console.log(error);
     }
 
   }

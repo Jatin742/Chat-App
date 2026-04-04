@@ -24,7 +24,7 @@ export const signup = async (request: Request, response: Response) => {
             secure: true,
             sameSite: 'none',
         });
-        return response.status(201).json(user);
+        return response.status(201).json({user});
     } catch (error) {
         return response.status(500).send("Internal Server Error");
     }

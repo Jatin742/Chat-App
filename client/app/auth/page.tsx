@@ -43,7 +43,7 @@ const Auth = () => {
         }
         return true;
     }
-    const handleLogin = async () => {
+    const handleLogin = async () => {   
         if (validateLogin()) {
             const response = await apiClient.post(LOGIN_ROUTE, { email, password }, { withCredentials: true });
             if (response.data.user._id) {
@@ -55,7 +55,6 @@ const Auth = () => {
                     router.push('/profile');
                 }
             }
-            console.log({ response });
         }
     }
     const handleSignUp = async () => {
@@ -63,9 +62,8 @@ const Auth = () => {
             const response = await apiClient.post(SIGNUP_ROUTE, { email, password }, { withCredentials: true });
             if (response.status === 201) {
                 setUserInfo(response.data.user);
-                router.push('/profile');
+                router.push('/profile');;
             }
-            console.log({ response });
 
         }
     }
