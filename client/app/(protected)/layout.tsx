@@ -1,19 +1,13 @@
-"use client";
+// layout.tsx (Server Component)
 
-import { SocketProvider } from "@/context/SocketContext";
-import AuthProvider from "../providers/AuthProvider";
-;
+export const dynamic = "force-dynamic";
+
+import ProtectedClientWrapper from "./ProtectedClientWrapper";
 
 export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <AuthProvider>
-      <SocketProvider>
-        {children}
-      </SocketProvider>
-    </AuthProvider>
-  );
+  return <ProtectedClientWrapper>{children}</ProtectedClientWrapper>;
 }

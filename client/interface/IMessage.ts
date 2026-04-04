@@ -1,4 +1,4 @@
-import { MessageType } from "@/enum/MessageEnum";
+import { MessageEnum } from "@/enum/MessageEnum";
 
 export interface IMessage {
   _id: string;

@@ -1,18 +1,19 @@
 import { StateCreator } from "zustand";
 import { IBaseContact } from "@/interface/IBaseContact";
-import { ContactType } from "@/enum/ContactType";
+import { ContactEnum } from "@/enum/ContactEnum";
 import { MessageType } from "@/types/MessageType";
+import { ContactType } from "@/types/ContactType";
 
 
 export interface ChatSlice {
-  selectedChatType?: ContactType;
-  selectedChatData?: IBaseContact;
+  selectedChatType?: ContactEnum;
+  selectedChatData?: ContactType;
   selectedChatMessages: MessageType[];
-  directMessagesContacts: IBaseContact[];
-  setSelectedChatType: (chatType: ContactType | undefined) => void;
-  setSelectedChatData: (chat: IBaseContact | undefined) => void;
+  directMessagesContacts: ContactType[];
+  setSelectedChatType: (chatType: ContactEnum) => void;
+  setSelectedChatData: (chat: ContactType) => void;
   setSelectedChatMessages: (messages: MessageType[]) => void;
-  setDirectMessagesContacts: (contacts: IBaseContact[]) => void;
+  setDirectMessagesContacts: (contacts: ContactType[]) => void;
   closeChat: () => void;
   addMessage: (message: MessageType) => void;
 }

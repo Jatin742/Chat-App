@@ -5,8 +5,7 @@ import { apiClient } from '@/app/lib/api-client';
 import { GET_DM_CONTACTS_ROUTE } from '@/app/lib/utils/constants';
 import { useAppStore } from '@/store';
 import ContactList from '@/components/contact-list';
-import { ContactType } from '@/enum/ContactType';
-import { log } from 'console';
+import { ContactEnum } from '@/enum/ContactEnum';
 import { IBaseContact } from '@/interface/IBaseContact';
 
 const ContactsContainer = () => {
@@ -17,7 +16,7 @@ const ContactsContainer = () => {
       if (response.data) {
         const normalizedContacts = response.data.map((user: IBaseContact) => ({
           ...user,
-          contactType: ContactType.USER,
+          contactType: ContactEnum.USER,
         }));
         setDirectMessagesContacts(normalizedContacts);
       }

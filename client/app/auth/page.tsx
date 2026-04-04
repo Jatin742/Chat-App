@@ -45,8 +45,11 @@ const Auth = () => {
     }
     const handleLogin = async () => {   
         if (validateLogin()) {
-            const response = await apiClient.post(LOGIN_ROUTE, { email, password }, { withCredentials: true });
+            const response = await apiClient.post(LOGIN_ROUTE, { email, password });
+            console.log(HOST)
             if (response.data.user._id) {
+                console.log(response.data);
+                
                 setUserInfo(response.data.user);
                 if (response.data.user.profileSetup) {
                     router.push('/chat');

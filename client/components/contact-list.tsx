@@ -3,13 +3,13 @@ import { useAppStore } from '@/store';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { HOST } from '@/app/lib/utils/constants';
 import { getColor } from '@/app/lib/utils/colors';
-import { IBaseContact } from '@/interface/IBaseContact';
 import { ContactStrategyFactory } from '@/factory/ContactStrategyFactory';
+import { ContactType } from '@/types/ContactType';
 
 const ContactList: React.FC<ContactListProps> = ({ contacts }) => {
     const { selectedChatData, setSelectedChatData, setSelectedChatType, selectedChatType, setSelectedChatMessages } = useAppStore();
     
-    const handleContactClick = (contact: IBaseContact) => {
+    const handleContactClick = (contact: ContactType) => {
         if (selectedChatData && selectedChatData._id !== contact._id) {
             setSelectedChatMessages([]);
         }

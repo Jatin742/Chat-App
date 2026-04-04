@@ -1,4 +1,4 @@
-import { ContactType } from "@/enum/ContactType";
+import { ContactEnum } from "@/enum/ContactEnum";
 
 export interface IContactDetails {
   _id: string;
@@ -6,5 +6,5 @@ export interface IContactDetails {
   email?: string;
   image?: string;
   color?: number;
-  contactType: ContactType;
+  contactType: ContactEnum;
 }

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import moment from 'moment';
 import { apiClient } from '@/app/lib/api-client';
 import { GET_ALL_MESSAGES_ROUTE, HOST } from '@/app/lib/utils/constants';
-import { ContactType } from '@/enum/ContactType';
+import { ContactEnum } from '@/enum/ContactEnum';
 import { MessageEnum } from '@/enum/MessageEnum';
 import { IMessage } from '@/interface/IMessage';
 import { MessageType } from '@/types/MessageType';
@@ -27,7 +27,7 @@ const MessageContainer = () => {
       }
     }
     if (selectedChatData?._id) {
-      if (selectedChatType === ContactType.USER) {
+      if (selectedChatType === ContactEnum.USER) {
         getMessages();
       }
     }
@@ -58,7 +58,7 @@ const MessageContainer = () => {
             )
           }
           {
-            selectedChatType === ContactType.USER && renderDMMessages(message)
+            selectedChatType === ContactEnum.USER && renderDMMessages(message)
           }
         </div>
       );

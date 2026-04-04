@@ -5,7 +5,7 @@ import { RiEmojiStickerLine } from 'react-icons/ri';
 import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useAppStore } from '@/store';
 import { useSocket } from '@/context/SocketContext';
-import { ContactType } from '@/enum/ContactType';
+import { ContactEnum } from '@/enum/ContactEnum';
 import { apiClient } from '@/app/lib/api-client';
 import { UPLOAD_FILE_ROUTE } from '@/app/lib/utils/constants';
 import { MessageEnum } from '@/enum/MessageEnum';
@@ -22,7 +22,7 @@ const MessageBar = () => {
     if (userInfo === undefined || message.trim() === "" || selectedChatData === undefined || selectedChatType === undefined) {
       return;
     }
-    if (selectedChatType === ContactType.USER) {
+    if (selectedChatType === ContactEnum.USER) {
       socket?.emit("sendMessage", {
         sender: userInfo._id,
         recipient: selectedChatData?._id,
@@ -65,7 +65,7 @@ const MessageBar = () => {
           withCredentials: true
         });
         if (response.status === 200 && response.data) {
-          if(selectedChatType === ContactType.USER){
+          if(selectedChatType === ContactEnum.USER){
             socket?.emit("sendMessage", {
               sender: userInfo._id,
               recipient: selectedChatData?._id,

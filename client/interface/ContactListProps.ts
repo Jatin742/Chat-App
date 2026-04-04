@@ -1,6 +1,5 @@
-import { ContactType } from "@/enum/ContactType";
-import { IBaseContact } from "./IBaseContact";
+import { ContactType } from "@/types/ContactType";
 
 export interface ContactListProps {
-  contacts: IBaseContact[];
+  contacts: ContactType[];
 }

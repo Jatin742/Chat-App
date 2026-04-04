@@ -1,3 +1,4 @@
+import { ContactEnum } from "@/enum/ContactEnum";
 import { IBaseContact } from "./IBaseContact";
 
 export interface IUser extends IBaseContact {

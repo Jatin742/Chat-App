@@ -1,13 +1,14 @@
 import { getColor } from '@/app/lib/utils/colors';
 import { HOST } from '@/app/lib/utils/constants';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
+import { ContactEnum } from '@/enum/ContactEnum';
 import { useAppStore } from '@/store';
 import { RiCloseFill } from 'react-icons/ri'
 
 const ChatHeader = () => {
   const { closeChat, selectedChatData, selectedChatType } = useAppStore();
   return (
-    <div className='h-[10vh] border-b-2 border-[#2b303b] flex items-center justify-between px-20'>
+    <div className='h-[10vh] border-b-2 border-[#c7d9ff] flex items-center justify-between px-20'>
       <div className="flex gap-5 items-center  w-full justify-between">
         <div className="flex gap-3 items-center justify-center">
           <div className="w-12 h-12 relative overflow-hidden">
@@ -21,16 +22,19 @@ const ChatHeader = () => {
                   :
                   <div
                     className={`uppercase h-12 w-12 text-lg border flex items-center justify-center rounded-full ${getColor(selectedChatData?.color ?? 0)}`}
-                  >
-                    {selectedChatData?.firstName ? selectedChatData.firstName.split("").shift() :
-                      selectedChatData?.email.split("").shift()
+                  >{selectedChatData?.contactType === ContactEnum.USER &&
+                    (
+                      selectedChatData?.firstName
+                        ? selectedChatData.firstName.charAt(0)
+                        : selectedChatData?.email?.charAt(0)
+                    )
                     }
                   </div>
               }
             </Avatar>
           </div>
           <div>
-            {selectedChatType === 'contact' &&
+            {selectedChatData?.contactType === ContactEnum.USER &&
               `${selectedChatData?.firstName} ${selectedChatData?.lastName}`
             }
           </div>

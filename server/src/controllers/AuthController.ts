@@ -20,11 +20,12 @@ export const signup = async (request: Request, response: Response) => {
             sameSite: 'none',
         });
         response.cookie("profileSetup", user.profileSetup, {
+            httpOnly: true,
             maxAge,
             secure: true,
             sameSite: 'none',
         });
-        return response.status(201).json({user});
+        return response.status(201).json({ user });
     } catch (error) {
         return response.status(500).send("Internal Server Error");
     }
@@ -46,21 +47,19 @@ export const login = async (request: Request, response: Response) => {
             return response.status(404).send('Password is incorrect');
         }
         // Chain the cookies first, then send the status and data
-        return response
+        // const options = 
+        response
             .cookie("jwt", createToken(email, user._id.toString()), {
-                maxAge,
+                httpOnly: true,
                 secure: true,
-                sameSite: 'none',
-                httpOnly: true, // Recommended for security
-            })
-            .cookie("profileSetup", user.profileSetup, {
-                maxAge,
-                secure: true,
-                sameSite: 'none',
+                sameSite: "none",
+                expires: new Date(
+                    Date.now() + maxAge
+                ),
             })
             .status(200)
             .json({ user });
-
+        return response;
     } catch (error) {
         return response.status(500).send("Internal Server Error");
     }
@@ -72,16 +71,26 @@ export const getUserInfo = async (request: AuthRequest, response: Response) => {
         const user = await User.findById(_id);
         if (!user) {
             return response.status(404).cookie("jwt", "", {
-                maxAge: 1,
+                httpOnly: true,
+                maxAge,
+                // crossSite: true
                 secure: true,
                 sameSite: 'none',
             }).send('User with given id is not found');
         }
-        response.cookie("profileSetup", user.profileSetup, {
+        response.cookie("jwt", createToken(user.email, user._id.toString()), {
+            httpOnly: true,
             maxAge,
+            // crossSite: true
             secure: true,
             sameSite: 'none',
-        });
+        })
+        // .cookie("profileSetup", user.profileSetup, {
+        //     httpOnly: true,
+        //     maxAge,
+        //     secure: true,
+        //     sameSite: 'none',
+        // });
         return response.status(200).json(user);
     } catch (error) {
         return response.status(500).send("Internal Server Error");

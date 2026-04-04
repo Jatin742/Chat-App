@@ -17,13 +17,15 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useAppStore } from "@/store";
 import { IUser } from "@/interface/IUser";
+import { ContactType } from "@/types/ContactType";
+import { ContactEnum } from "@/enum/ContactEnum";
 // import { log } from "console";
 
 
 const NewDM = () => {
     const { setSelectedChatType, setSelectedChatData } = useAppStore();
     const [openNewContactModel, setOpenNewContactModel] = useState(false);
-    const [searchedContacts, setSearchedContacts] = useState<IUser[]>([]);
+    const [searchedContacts, setSearchedContacts] = useState<ContactType[]>([]);
     const searchContacts = async (searchTerm: string) => {
 
         try {
@@ -45,12 +47,18 @@ const NewDM = () => {
         }
     }
 
-    const selectNewContact = (contact: IUser) => {
+    const selectNewContact = (contact: ContactType) => {
         setOpenNewContactModel(false);
-        setSelectedChatType("contact");
+        setSelectedChatType(contact.contactType);
         setSelectedChatData(contact);
         setSearchedContacts([]);
     }
+    const getContactName = (contact: ContactType) => {
+        if (contact.contactType === ContactEnum.USER) {
+            return [contact.firstName, contact.lastName].filter(Boolean).join(" ");
+        }
+        return contact.name;
+    };
     return (
         <>
             <TooltipProvider>
@@ -85,45 +93,50 @@ const NewDM = () => {
                             onChange={(e) => searchContacts(e.target.value)}
                         />
                     </div>
-                    {searchedContacts.length > 0 && 
-                    <ScrollArea className="h-62.5 ">
-                        <div className="flex flex-col gap-5">
-                            {searchedContacts.map((contact) => (
-                                // {console.log(contact.image);}
+                    {searchedContacts.length > 0 &&
+                        <ScrollArea className="h-62.5 ">
+                            <div className="flex flex-col gap-5">
+                                {searchedContacts.map((contact) => (
+                                    // {console.log(contact.image);}
 
-                                <div key={contact._id}
-                                    className="flex gap-3 items-center cursor-pointer"
-                                    onClick={() => selectNewContact(contact)}
-                                >
-                                    <div className="w-12 h-12 relative overflow-hidden">
-                                        <Avatar className='h-12 w-12 rounded-full overflow-hidden'>
-                                            {
-                                                contact.image ?
-                                                    <AvatarImage
-                                                        src={`${HOST}/${contact.image}`}
-                                                        alt='profile'
-                                                        className='object-cover w-full h-full bg-black' />
-                                                    :
-                                                    <div
-                                                        className={`uppercase h-12 w-12 text-lg border flex items-center justify-center rounded-full ${getColor(contact?.color ?? 0)}`}
-                                                    >
-                                                        {contact?.firstName ? contact.firstName.split("").shift() :
-                                                            contact?.email.split("").shift()
-                                                        }
-                                                    </div>
-                                            }
-                                        </Avatar>
+                                    <div key={contact._id}
+                                        className="flex gap-3 items-center cursor-pointer"
+                                        onClick={() => selectNewContact(contact)}
+                                    >
+                                        <div className="w-12 h-12 relative overflow-hidden">
+                                            <Avatar className='h-12 w-12 rounded-full overflow-hidden'>
+                                                {
+                                                    contact.image ?
+                                                        <AvatarImage
+                                                            src={`${HOST}/${contact.image}`}
+                                                            alt='profile'
+                                                            className='object-cover w-full h-full bg-black' />
+                                                        :
+                                                        <div
+                                                            className={`uppercase h-12 w-12 text-lg border flex items-center justify-center rounded-full ${getColor(contact?.color ?? 0)}`}
+                                                        >{contact.contactType === ContactEnum.USER &&
+                                                            (
+                                                                contact.firstName
+                                                                    ? contact.firstName.charAt(0)
+                                                                    : contact?.email?.charAt(0)
+                                                            )
+                                                            }
+                                                        </div>
+                                                }
+                                            </Avatar>
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <span>
+                                                {getContactName(contact)}
+                                            </span>
+                                            <span className="text-xs">{"email" in contact && (
+                                                <span className="text-xs">{contact.email}</span>
+                                            )}</span>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <span>{contact?.firstName && contact.lastName ?
-                                            `${contact.firstName} ${contact.lastName}` : ""
-                                        }</span>
-                                        <span className="text-xs">{contact.email}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </ScrollArea>}
+                                ))}
+                            </div>
+                        </ScrollArea>}
                     {searchedContacts.length == 0 &&
                         <div className='flex-1 md:bg-[#1c1d25] md:flex mt-5 md:mt-0 flex-col justify-center items-center duration-1000 transition-all'>
                             <Lottie
